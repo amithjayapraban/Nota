@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-type Prop = {
-  picture: string | undefined;
-  logged: boolean | undefined;
-  name: string | undefined;
-  signout: Function;
-  signin: Function;
-};
+import { myCon } from "./context";
+import Login from "./login";
 
-export default function Settings({
-  picture,
-  logged,
-  name,
-  signout,
-  signin,
-}: Prop) {
+export default function Settings(
+ ) {
+
+  const {signIn,signout,user,logged,getUser} = useContext(myCon);
   const navigate = useNavigate();
   const [bname, setBname] = useState("");
   useEffect(() => {
@@ -24,10 +16,9 @@ export default function Settings({
     else {
       setBname("Light Theme");
     }
-  }, []);
-  //  useEffect(()=>{
-
-  //  },[logged,picture])
+    getUser();
+  }, [ ]);
+   
 
   function Changetheme() {
     if (document.documentElement.getAttribute("data-theme") === "light") {
@@ -43,19 +34,50 @@ export default function Settings({
 
   return (
     <div className="w-[100%] flex flex-col justify-start">
-      <p className="text-4xl flex items-center   font-sans cursor-default mb-4 font-[300]">
-        Settings
+      <p className="text-4xl flex items-center gap-3  font-sans cursor-default mb-4 font-[300]">
+        Settings 
+        <div
+       onClick={Changetheme}
+        className="flex bg-bg2  justify-center items-center w-[48px] h-[48px]  p-3 rounded-[3px] toggle  relative md:hover:bg-bg2 "
+      > 
+       {/* <span className="self-center w-[max-content] mr-[36px] py-[6px]  ">Switch to {bname}</span> */}
+        <svg  
+          className="tog absolute sun  p-1 rounded  "
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="var(--icon)"
+            className="opacity-[var(--sun)]   "
+            d="M4.069 13h-4.069v-2h4.069c-.041.328-.069.661-.069 1s.028.672.069 1zm3.034-7.312l-2.881-2.881-1.414 1.414 2.881 2.881c.411-.529.885-1.003 1.414-1.414zm11.209 1.414l2.881-2.881-1.414-1.414-2.881 2.881c.528.411 1.002.886 1.414 1.414zm-6.312-3.102c.339 0 .672.028 1 .069v-4.069h-2v4.069c.328-.041.661-.069 1-.069zm0 16c-.339 0-.672-.028-1-.069v4.069h2v-4.069c-.328.041-.661.069-1 .069zm7.931-9c.041.328.069.661.069 1s-.028.672-.069 1h4.069v-2h-4.069zm-3.033 7.312l2.88 2.88 1.415-1.414-2.88-2.88c-.412.528-.886 1.002-1.415 1.414zm-11.21-1.415l-2.88 2.88 1.414 1.414 2.88-2.88c-.528-.411-1.003-.885-1.414-1.414zm2.312-4.897c0 2.206 1.794 4 4 4s4-1.794 4-4-1.794-4-4-4-4 1.794-4 4zm10 0c0 3.314-2.686 6-6 6s-6-2.686-6-6 2.686-6 6-6 6 2.686 6 6z"
+          />
+        </svg>
+        <svg  
+          className="tog  absolute  moon    p-1  "
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="var(--icon)"
+            d="M22 12c0 5.514-4.486 10-10 10-4.826 0-8.864-3.436-9.797-7.99 3.573.142 6.903-1.818 8.644-5.013 1.202-2.206 1.473-4.679.83-6.992 5.608-.194 10.323 4.338 10.323 9.995zm-10-12c-1.109 0-2.178.162-3.197.444 3.826 5.933-2.026 13.496-8.781 11.128l-.022.428c0 6.627 5.373 12 12 12s12-5.373 12-12-5.373-12-12-12z"
+          />
+        </svg>
+      </div>
       </p>
       
 
       <div className=" flex flex-col self-center md:self-center  py-8 items-center rounded-[3px] px-4   w-[80vw] md:w-[30vw] md:h-[30vw]  mt-7 gap-3">
-        {picture !== undefined ? (
+        {user.picture !== undefined ? (
           <img
             className="w-[80px]  border border-white rounded-full"
-            src={picture}
+            src={user.picture}
           />
         ) : (
-          <div className="w-[80px]  border  flex justify-center items-center  bg-transparent h-[80px] rounded-full">
+          <div className="w-[80px]   border-[1.5px]  flex justify-center items-center  bg-transparent h-[80px] rounded-full">
            <svg
               fill="var(--icon)"
               xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +89,7 @@ export default function Settings({
             </svg>
           </div>
         )}
-        <h1>{name && name}</h1>
+        <h4>{user.name && user.name}</h4>
 
         {logged ? (
           <button
@@ -75,7 +97,7 @@ export default function Settings({
               signout();
               navigate("/settings");
             }}
-            className=" hover:border font-[500] hover:bg-bg2 hover:text-red-500  text-sm font-sans  p-2 rounded-[2px] text-red-500  w-[max-content] "
+            className=" w-[max-content] text-red-400 inline-flex justify-start items-center md:hover:bg-bg2 gap-1 font-sans rounded-[2px]  p-2 "
           >
             Sign out
           </button>
@@ -83,9 +105,9 @@ export default function Settings({
           <>
             <button
               onClick={async () => {
-                await signin();
+                await signIn();
               }}
-              className=" w-[max-content]  inline-flex justify-start items-center hover:bg-bg2 gap-1 font-sans rounded-[2px]  p-2"
+              className=" w-[max-content]  md:bg-none inline-flex justify-start items-center md:hover:bg-bg2 gap-1 font-sans rounded-[3px]  p-3"
             >
               Login with
               <svg
@@ -106,36 +128,7 @@ export default function Settings({
             </button>
           </>
         )}
-         <div
-       onClick={Changetheme}
-        className="flex justify-start w-[max-content] min-w-[200px]  px-2 py-1 rounded-[2px] toggle  relative hover:bg-bg2 "
-      >  <span className="self-center w-[max-content] mr-[36px] py-[6px]  ">Switch to {bname}</span>
-        <svg  
-          className="tog absolute sun   p-1 rounded right-0 "
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path
-            fill="var(--icon)"
-            className="opacity-[var(--sun)]   "
-            d="M4.069 13h-4.069v-2h4.069c-.041.328-.069.661-.069 1s.028.672.069 1zm3.034-7.312l-2.881-2.881-1.414 1.414 2.881 2.881c.411-.529.885-1.003 1.414-1.414zm11.209 1.414l2.881-2.881-1.414-1.414-2.881 2.881c.528.411 1.002.886 1.414 1.414zm-6.312-3.102c.339 0 .672.028 1 .069v-4.069h-2v4.069c.328-.041.661-.069 1-.069zm0 16c-.339 0-.672-.028-1-.069v4.069h2v-4.069c-.328.041-.661.069-1 .069zm7.931-9c.041.328.069.661.069 1s-.028.672-.069 1h4.069v-2h-4.069zm-3.033 7.312l2.88 2.88 1.415-1.414-2.88-2.88c-.412.528-.886 1.002-1.415 1.414zm-11.21-1.415l-2.88 2.88 1.414 1.414 2.88-2.88c-.528-.411-1.003-.885-1.414-1.414zm2.312-4.897c0 2.206 1.794 4 4 4s4-1.794 4-4-1.794-4-4-4-4 1.794-4 4zm10 0c0 3.314-2.686 6-6 6s-6-2.686-6-6 2.686-6 6-6 6 2.686 6 6z"
-          />
-        </svg>
-        <svg  
-          className="tog  absolute  moon    p-1 rounded right-0 "
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path
-            fill="var(--icon)"
-            d="M22 12c0 5.514-4.486 10-10 10-4.826 0-8.864-3.436-9.797-7.99 3.573.142 6.903-1.818 8.644-5.013 1.202-2.206 1.473-4.679.83-6.992 5.608-.194 10.323 4.338 10.323 9.995zm-10-12c-1.109 0-2.178.162-3.197.444 3.826 5.933-2.026 13.496-8.781 11.128l-.022.428c0 6.627 5.373 12 12 12s12-5.373 12-12-5.373-12-12-12z"
-          />
-        </svg>
-      </div>
+         
         
       </div>
     </div>

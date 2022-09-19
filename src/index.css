@@ -7,21 +7,21 @@
   --bgc: rgb(253, 253, 250);
   --fontc: #2e2e2e;
   --bg2: rgb(235, 235, 235);
-  --icon: #00e44c;
+  --icon:  #26de9a;
   --sun: hidden;
   --moon: unset;
   ---codebg:#4d4d53;
-  ---codetext:#00e44c;
+  ---codetext:#34e89e;
 }
 [data-theme="dark"],
 .dark {
   --bgc: #2e2e2e;
   --fontc: white;
   --bg2: #3b3b3b;
-  --icon: #00ff57;
+  
   --sun: unset;
   --moon: hidden;
-  ---codebg:#04d148;
+  ---codebg:#34e89e;
   ---codetext:#323239;
 }
 [data-tooltip] {
@@ -69,6 +69,9 @@ mark {
   position: relative;
   width: 100%;
   background: url("");
+  background: #FF5F6D;  /* fallback for old browsers */
+  
+  border-radius: 3px;  
   /* background-color: #8c8c8c; */
   /* background:conic-gradient(rgba(128, 128, 128, 0) 0deg,rgba(128, 128, 128, 0) 140deg, var(--icon) 140deg,var(--icon) 220deg, rgba(128, 128, 128, 0) 220deg),
   conic-gradient(rgba(128, 128, 128, 0) 0deg,rgba(128, 128, 128, 0) 140deg, var(--icon) 140deg,var(--icon) 220deg, rgba(128, 128, 128, 0) 220deg);
@@ -76,6 +79,7 @@ mark {
   background-position: 0% 0%, 1% 0%; */
 }
 .bannertext {
+ 
 }
 .bannerimg {
 }
@@ -126,6 +130,24 @@ mark {
   padding: 15px;
   color: var(--fontc);
   min-height: 70vh;
+  max-height: 70vh;
+  overflow-y: scroll;
+}
+@media (max-width: 900px){
+  .DraftEditor-root {
+    min-height: 60vh;
+    max-height: 65vh;
+    overflow-y: scroll;
+  }
+
+}
+@media (max-width: 399px){
+  .DraftEditor-root {
+    min-height: 50vh;
+    max-height: 55vh;
+    overflow-y: scroll;
+  }
+
 }
 
 
@@ -141,9 +163,9 @@ mark {
   display: inline-block;
 }
 
-.RichEditor-activeButton {
+/* .RichEditor-activeButton {
   color: green;
-}
+} */
 h1{
   font-size: 2rem;
 }
@@ -173,6 +195,7 @@ pre{
   color:var(---codetext);
   padding: 3px;
   border-radius: 2px;
-  min-width: 100px;
-  width: max-content;
+
+  max-width: 60vw;
+  min-width: 40vw;
 }

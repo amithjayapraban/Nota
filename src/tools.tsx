@@ -42,9 +42,9 @@ export const Tools = () => {
 export const ButtonBlock=({type}:Prop)=>{
   const {editorState,setEditorState}=useContext(myCon);
      const currentBl=RichUtils.getCurrentBlockType(editorState);
-     let className="justify-center mr-1 text-fontc items-center text-sm min-w-[36px] px-1 h-[36px]  md:bg-transparent md:border-none rounded-[3px]";
+     let className="justify-center mr-1 text-fontc items-center text-sm min-w-[36px] px-1 h-[36px]  md:bg-transparent md:border-none rounded-[2px]";
      if(currentBl===type.style){
-      className="justify-center mr-1 text-fontc items-center text-sm min-w-[36px] px-1 h-[36px] bg-bg2  md:border-none rounded-[3px]";
+      className="justify-center mr-1 text-fontc items-center text-sm min-w-[36px] px-1 h-[36px] bg-bg2  md:border-none rounded-[2px]";
      }
     const toggleBl = (e: any) => {
     e.preventDefault();
@@ -63,9 +63,9 @@ export const ButtonBlock=({type}:Prop)=>{
 export const ButtonInline=({type}:Prop)=>{
   const {editorState,setEditorState}=useContext(myCon);
      const currentIn:any= editorState.getCurrentInlineStyle();
-     let className="justify-center mr-1 text-fontc items-center text-sm min-w-[36px] px-1 h-[36px]   md:border-none rounded-[3px]";
+     let className="justify-center mr-1 text-fontc items-center text-sm min-w-[36px] p-1 h-[36px]   md:border-none rounded-[2px]";
      if(currentIn.has(type.style)){
-      className="justify-center mr-1 text-fontc items-center text-sm min-w-[36px] px-1 h-[36px] bg-bg2  md:border-none rounded-[3px]";
+      className="justify-center mr-1 text-fontc items-center text-sm min-w-[36px] p-1 h-[36px] bg-logogreen  md:border-none rounded-[2px]";
      }
     const toggleIn = (e: any) => {
     e.preventDefault();

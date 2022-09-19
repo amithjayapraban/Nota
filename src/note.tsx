@@ -6,28 +6,36 @@ import { Tools } from "./tools";
 import { myCon } from "./context";
 import "draft-js/dist/Draft.css";
 type Prop = {
-  deleteNote: Function;
-  supabase: any;
+  
+
   setNoteId: Function;
   logged: boolean | undefined;
 };
 export default function Note({
-  deleteNote,
-  supabase,
-  setNoteId,
+  
+ 
   logged,
 }: Prop) {
-  const { editorState, setEditorState ,fetchNote,uid} = useContext(myCon);
-
+  const { editorState,deleteNote, setEditorState,setNoteId,setAllNotes,allNotes ,Edit,fetchNote} = useContext(myCon);
+  const uid=useParams();
+  // console.log(uid.uid,"uiidddded");
   const navigate = useNavigate();
-  
+ 
 
-  
+useEffect(()=>{
+  setNoteId(uid.uid);
+},[ ])
+   useEffect(()=>{
+    fetchNote(uid.uid);
+   },[allNotes])
 
   useEffect(() => {
-    if (uid !== `new`) {
-      fetchNote();
-    }
+   
+    // const newcon = EditorState.createEmpty();
+    // setEditorState(newcon);
+     if (uid.uid !== `new`) {
+      fetchNote(uid.uid);
+     }
   }, []);
 
   return (
@@ -41,14 +49,15 @@ export default function Note({
         onClick={async () => {
           if (logged !== undefined || !logged) {
             localStorage.removeItem("note");
+            setAllNotes(null);
             navigate("/home");
           }
-          if (await deleteNote(uid)) {
+          if (await deleteNote(uid.uid)) {
             console.log("navigate");
             navigate("/home");
           }
         }}
-        className="flex justify-center px-2 md:border-none  w-[max-content] h-[36px]  items-center text-sm  rounded-[3px]  text-red-500 "
+        className="flex justify-center px-2 md:border-none transition w-[max-content] h-[36px]  items-center text-sm  rounded-[3px] hover:text-red-500 md:text-red-400  text-red-500"
       >
         Delete
       </button>

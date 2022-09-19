@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { myCon } from "./context";
 type Prop = {
-  signin: Function;
+
   logged: boolean|undefined;
 };
-export default function Login({ signin, logged }: Prop) {
+export default function Login({  logged }: Prop) {
+  const {signIn} = useContext(myCon);
   const navigate = useNavigate();
   useEffect(() => {
     if (logged) navigate("/home");
@@ -40,7 +42,7 @@ export default function Login({ signin, logged }: Prop) {
         <div className="buttonDiv rounded-[2px]  w-[max-content]"></div>
         <button
           onClick={() => {
-            signin();
+            signIn();
           }}
           className="border mt-5 inline-flex justify-start items-center hover:bg-bg2 gap-1 font-sans rounded-[2px]  py-2 px-3"
         >
