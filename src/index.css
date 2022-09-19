@@ -1,0 +1,178 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bgc: rgb(253, 253, 250);
+  --fontc: #2e2e2e;
+  --bg2: rgb(235, 235, 235);
+  --icon: #00e44c;
+  --sun: hidden;
+  --moon: unset;
+  ---codebg:#4d4d53;
+  ---codetext:#00e44c;
+}
+[data-theme="dark"],
+.dark {
+  --bgc: #2e2e2e;
+  --fontc: white;
+  --bg2: #3b3b3b;
+  --icon: #00ff57;
+  --sun: unset;
+  --moon: hidden;
+  ---codebg:#04d148;
+  ---codetext:#323239;
+}
+[data-tooltip] {
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  [data-tooltip]:before {
+    position: absolute;
+    color: var(--fontc);
+    z-index: 1;
+    font-size: 12px;
+    font-weight: 300;
+    top: -20px;
+    left: 20px;
+    border-radius: 3px;
+    padding: 5px 5px;
+    background-color: var(--bg2);
+    content: attr(data-tooltip);
+    opacity: 0;
+    width: max-content;
+  }
+  [data-tooltip]:hover:before {
+    opacity: 1;
+  }
+}
+
+* {
+  /* font-family: 'Montserrat', sans-serif; */
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0%;
+}
+html {
+  background-color: var(--bgc);
+  
+}
+mark {
+  background-color: var(--icon);
+}
+::-webkit-scrollbar {
+  width: 1px;
+}
+.banner {
+  position: relative;
+  width: 100%;
+  background: url("");
+  /* background-color: #8c8c8c; */
+  /* background:conic-gradient(rgba(128, 128, 128, 0) 0deg,rgba(128, 128, 128, 0) 140deg, var(--icon) 140deg,var(--icon) 220deg, rgba(128, 128, 128, 0) 220deg),
+  conic-gradient(rgba(128, 128, 128, 0) 0deg,rgba(128, 128, 128, 0) 140deg, var(--icon) 140deg,var(--icon) 220deg, rgba(128, 128, 128, 0) 220deg);
+  background-size:5% 5%, 5% 5% ;
+  background-position: 0% 0%, 1% 0%; */
+}
+.bannertext {
+}
+.bannerimg {
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--fontc);
+
+  border-radius: 1px;
+}
+.toggle {
+  cursor: pointer;
+  transition: all 0s ease-in-out;
+}
+.moon {
+  visibility: var(--moon);
+  height: 36px;
+  width: 36px;
+  transition: transform 0.4s ease-in-out;
+}
+.sun {
+  visibility: var(--sun);
+  transition: transform 0.4s ease-in-out;
+  height: 36px;
+  width: 36px;
+  animation: rotate 0.25s linear 0.8s;
+}
+.moon {
+  animation: rotate 0.25s linear 0.8s;
+}
+.moon:hover {
+  animation: rotate 0.25s linear 2;
+  animation-delay: 4s;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.DraftEditor-root {
+  background: var(--bg2);
+  border-radius: 3px;
+  /* border: 1px solid #ddd; */
+  font-family: sans-serif;
+  font-size: 14px;
+  padding: 15px;
+  color: var(--fontc);
+  min-height: 70vh;
+}
+
+
+.RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
+  display: none;
+}
+
+.RichEditor-styleButton {
+  color: var(--fontc);
+  cursor: pointer;
+  margin-right: 16px;
+  padding: 2px 0;
+  display: inline-block;
+}
+
+.RichEditor-activeButton {
+  color: green;
+}
+h1{
+  font-size: 2rem;
+}
+h2{
+  font-size: 1.5rem;
+}
+h3{
+  font-size: 18px;
+}
+h4{
+  font-size: 16px;
+}
+h5{
+  font-size: 14px;
+}
+h6{
+  font-size: 11px;
+}
+
+blockquote{
+  border-left: 2px solid grey;
+  padding-left: 6px;
+  font-size: 24px;
+}
+pre{
+  background-color:var(---codebg) ;
+  color:var(---codetext);
+  padding: 3px;
+  border-radius: 2px;
+  min-width: 100px;
+  width: max-content;
+}
