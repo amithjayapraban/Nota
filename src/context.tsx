@@ -133,7 +133,7 @@ export const CProvider = ({ children }: any) => {
         provider: "google",
       },
       {
-        redirectTo: "http://localhost:3000/home",
+        redirectTo: "https://nota-nu.vercel.app/home",
       }
     );
   }
