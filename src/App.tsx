@@ -100,7 +100,7 @@ useEffect(()=>{
         
         
         <Routes>
-          <Route path="/" element={<Login  logged={logged} />} />
+          <Route path="/" element={<Login   />} />
           <Route path="/home" element={<Home  />} />
           <Route
             path="/note/:uid"

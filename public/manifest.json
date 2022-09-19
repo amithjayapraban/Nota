@@ -7,18 +7,18 @@
     "display": "standalone",
     "icons": [
       {
-        "src": "/logo2.png",
+        "src": "public/logo2.png",
         "type": "image/png",
         "sizes":"512x512",
         "purpose": "maskable"
       },
       {
-        "src": "/logo2.png",
+        "src": "public/logo2.png",
         "type": "image/png",
         "sizes":"512x512",
         "purpose": "any"
       }
     ],
-    "start_url": "./",
-    "scope":"/"
+    "start_url": "*"
+ 
   }

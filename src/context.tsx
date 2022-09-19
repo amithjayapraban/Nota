@@ -243,6 +243,7 @@ export const CProvider = ({ children }: any) => {
         setUser(userd.user_metadata);
         SelectAll();
         setLogged(true);
+        return userd.user_metadata
       } else {
         setLogged(false);
         setUser({

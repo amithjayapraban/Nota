@@ -1,16 +1,20 @@
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { myCon } from "./context";
-type Prop = {
 
-  logged: boolean|undefined;
-};
-export default function Login({  logged }: Prop) {
-  const {signIn} = useContext(myCon);
+export default function Login() {
+  const {signIn,logged,user,getUser} = useContext(myCon);
   const navigate = useNavigate();
+  
   useEffect(() => {
-    if (logged) navigate("/home");
-  }, []);
+    async  function  sq(){
+      const s=await getUser();
+      console.log(s,"sq")
+      if(s){navigate("/home");}
+   }
+   sq();
+    
+  }, [ ]);
 
   return (
     <div className="h-[80vh] md:h-[60vh] items-center justify-center flex flex-col w-[100%]">
