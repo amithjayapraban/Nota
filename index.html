@@ -2,22 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-   <link  rel="icon" type="image/svg+xml" href="/src/assets/logo2.svg" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="theme-color" content="#2e2e2e" />
+    <link rel="icon" type="image/png" href="public/logo2.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous' async defer></script>
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+      async
+      defer
+    ></script>
     <script src="https://accounts.google.com/gsi/client" defer></script>
-    
-  
+    <link
+      rel="manifest"
+      crossorigin="use-credentials"
+      href="public/manifest.json"
+    />
+
     <title>Nota</title>
- </head>
+  </head>
   <body>
-    <div id="root">
-     
-    </div>
-    <script> {const global = globalThis} </script>
-    <script type="module"  src="/src/main.tsx">
-      
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker
+            .register("/worker.js")
+            .then(
+              function (registration) {
+                console.log(
+                  "Worker registration successful",
+                  registration.scope
+                );
+              },
+              function (err) {
+                console.log("Worker registration failed", err);
+              }
+            )
+            .catch(function (err) {
+              console.log(err);
+            });
+        });
+      } else {
+        console.log("Service Worker is not supported by browser.");
+      }
     </script>
+    <div id="root"></div>
+    <script>
+      {
+        const global = globalThis;
+      }
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
