@@ -34,7 +34,7 @@ export default function Settings(
 
   return (
     <div className="w-[100%] flex flex-col justify-start">
-      <p className="text-4xl flex items-center gap-3  font-sans cursor-default mb-4 font-[300]">
+      <p className="text-2xl md:text-4xl flex items-center justify-between gap-3  font-sans cursor-default mb-4 font-[300]">
         Settings 
         <div
        onClick={Changetheme}
