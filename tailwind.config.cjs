@@ -7,11 +7,13 @@ module.exports = {
     extend: {
       
       colors: {
+        mainbg:"var(--mainbg)",
         bgc: "var(--bgc)",
         fontc: "var(--fontc)",
         bg2: "var(--bg2)",
-       icon: '#868686',
+       logoicon: 'var(--icon)',
       logogreen:"var(--icon)",
+      bg3:"var(--bg3)",
       }
       
     }

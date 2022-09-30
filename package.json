@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.35.6",
+    "dotenv": "^16.0.3",
     "draft-js": "^0.11.7",
     "fbjs": "^3.0.4",
+    "framer-motion": "^7.5.0",
     "immutable": "^4.1.0",
     "jwt-decode": "^3.1.2",
     "object-assign": "^4.1.1",
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "@types/draft-js": "^0.11.9",
+    "@types/node": "^18.7.23",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/uuid": "^8.3.4",

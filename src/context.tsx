@@ -1,4 +1,4 @@
-import { createContext, SetStateAction, useState } from "react";
+import { createContext, SetStateAction, useMemo, useState } from "react";
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -15,12 +15,12 @@ import { useParams } from "react-router-dom";
 const contextDefaultState = {
   editorState: EditorState,
   setEditorState: () => EditorState.createEmpty(),
-  logged: undefined,
+  logged: false,
   Edit: () => {},
   noteId: undefined,
   setNoteId: () => {},
   fetchNote: () => {},
-  
+  saveNew: () => {},
   signout: () => {},
   signIn: () => {},
   supabase: SupabaseClient,
@@ -34,7 +34,8 @@ const contextDefaultState = {
     name: undefined,
     email: undefined,
   },
-  getUser:()=>{}
+  getUser: () => {},
+  setUser: () => {},
 };
 
 export const myCon = createContext<CInterface>(contextDefaultState);
@@ -47,14 +48,14 @@ export interface CInterface {
   noteId: string | undefined | null;
   setNoteId: Function;
   fetchNote: Function;
- 
+  saveNew: Function;
   supabase: any;
   signout: Function;
   signIn: Function;
   deleteNote: Function;
   SelectAll: Function;
   setAllNotes: Function;
-  getUser:Function;
+  getUser: Function;
   allNotes:
     | {
         DATA: { html: string };
@@ -68,10 +69,11 @@ export interface CInterface {
     email: string | undefined;
   };
   setLogged: Function;
+  setUser: Function;
 }
 
 export const CProvider = ({ children }: any) => {
-  const [logged, setLogged] = useState<boolean | undefined>();
+  const [logged, setLogged] = useState<boolean | undefined>(false);
   const [user, setUser] = useState<{
     picture: string | undefined;
     name: string | undefined;
@@ -101,31 +103,28 @@ export const CProvider = ({ children }: any) => {
     persistSession: true,
     detectSessionInUrl: true,
   };
+  var key: any ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6Y2Fyc2Z2bXdobWlpbW96amhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjI4MzUxODcsImV4cCI6MTk3ODQxMTE4N30.12FtWNOX8P0dRBKd54BxV0VZsjsdH_-NiegUadpLoDk"
   const supabase = createClient(
     "https://azcarsfvmwhmiimozjhf.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6Y2Fyc2Z2bXdobWlpbW96amhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjI4MzUxODcsImV4cCI6MTk3ODQxMTE4N30.12FtWNOX8P0dRBKd54BxV0VZsjsdH_-NiegUadpLoDk",
+    key,
     options
   );
 
-  
-    // supabase.auth.onAuthStateChange((event: any, session: any) => {
-    //   if (session) {
-    //     console.log(event, session.user.user_metadata);
-    //     setLogged(true);
-    //     setUser(session.user.user_metadata);
-    //   } 
-    //   else {
-    //     setLogged(false);
-    //     setUser({
-    //       picture: undefined,
-    //       name: undefined,
-    //       email: undefined,
-    //     });
-    //   }
-    // });
-  
-
-  
+  // supabase.auth.onAuthStateChange((event: any, session: any) => {
+  //   if (session) {
+  //     console.log(event, session.user.user_metadata);
+  //     setLogged(true);
+  //     setUser(session.user.user_metadata);
+  //   }
+  //   else {
+  //     setLogged(false);
+  //     setUser({
+  //       picture: undefined,
+  //       name: undefined,
+  //       email: undefined,
+  //     });
+  //   }
+  // });
 
   async function signIn() {
     const a: any = await supabase.auth.signIn(
@@ -133,44 +132,47 @@ export const CProvider = ({ children }: any) => {
         provider: "google",
       },
       {
-        redirectTo: "https://nota-nu.vercel.app/home",
+        redirectTo: "https://nota-nu.vercel.app/settings",
       }
     );
+  
   }
+
   async function signout() {
     const { error } = await supabase.auth.signOut();
     console.log(error);
     setLogged(false);
     setUser({
-           picture: undefined,
-           name: undefined,
-           email: undefined,
-          });
+      picture: undefined,
+      name: undefined,
+      email: undefined,
+    });
   }
 
   const Edit = () => {
-    console.log("uid when editing");
+    // console.log("uid when editing");
     const contentState = editorState.getCurrentContent();
-    console.log(contentState, "contentstate before storing");
+    // console.log(contentState, "contentstate before storing");
 
     const rawData = convertToRaw(contentState);
     var data: any = { html: rawData };
-    console.log(data.html, "to raw");
+    // console.log(data.html, "to raw");
     if (logged == false || logged == undefined) {
-      
-        localStorage.setItem("note", JSON.stringify(data.html));
-      
+      localStorage.setItem("note", JSON.stringify(data.html));
+      return data;
     } else {
       if (noteId === null || noteId === "new") {
         const id = uuidv4();
         console.log(id, "uuid genertaed");
         saveNew(data, id);
+        return data;
       }
       if (noteId !== "new") {
         Modify(noteId, data);
+        return data;
       }
     }
-    console.log("qqdqdqd");
+    // console.log("qqdqdqd");
   };
 
   async function saveNew(data: any, id: any, heading?: any) {
@@ -194,22 +196,20 @@ export const CProvider = ({ children }: any) => {
       .update({ DATA: html, HEADING: heading })
       .match({ UID: UID });
 
-      if(error){
-        const { error } = await supabase.from("nota").insert([
-          {
-            UID: `${UID}`,
-            USERID: user.email,
-            DATA: html.html,
-            HEADING: "heading",
-          },
-        ]);
-      }
+    if (error) {
+      const { error } = await supabase.from("nota").insert([
+        {
+          UID: `${UID}`,
+          USERID: user.email,
+          DATA: html.html,
+          HEADING: "heading",
+        },
+      ]);
+    }
     // setNoteId(null);
   }
 
   async function fetchNote(uid: any) {
-   
-    console.log(uid, "uid");
     // setNoteId(uid);
     const { data, error }: any = await supabase
       .from("nota")
@@ -217,33 +217,35 @@ export const CProvider = ({ children }: any) => {
       .match({ UID: uid })
       .limit(1);
 
-    if (logged===true && data) {
+    if (logged === true && data) {
       if (data.length > 0) {
         //  const html = JSON.parse(data.DATA.blocks);
-        console.log(data[0].DATA, "fetched single");
+
         const contentState: any = convertFromRaw(data[0].DATA.html);
         const newcon = EditorState.createWithContent(contentState);
         setEditorState(newcon);
       }
     }
-    if (logged==false||logged==undefined) {
+    if (logged === false || logged === undefined) {
       const i: any = localStorage.getItem("note");
       const state = JSON.parse(i);
       const contentState: any = convertFromRaw(state);
-      console.log(contentState, "from raw");
+      // console.log(contentState, "from raw");
       const newcon = EditorState.createWithContent(contentState);
       setEditorState(newcon);
     }
   }
 
- function getUser(){
-  const userd: any = supabase.auth.user();
+  function getUser() {
+    const userd: any = supabase.auth.user();
     if (userd) {
       if (userd.aud == "authenticated") {
         setUser(userd.user_metadata);
-        SelectAll();
         setLogged(true);
-        return userd.user_metadata
+
+        // console.log("getuser invoked");
+
+        // return userd.user_metadata;
       } else {
         setLogged(false);
         setUser({
@@ -251,34 +253,35 @@ export const CProvider = ({ children }: any) => {
           name: undefined,
           email: undefined,
         });
+
+        // console.log(logged,"logged in f");
+        // SelectAll();
       }
     }
- }
+  }
 
   async function SelectAll() {
-    if(logged===true){
-    const { data, error }: any = await supabase
-      .from("nota")
-      .select("DATA, UID,HEADING")
-      .match({ USERID: user.email })
-      .order("ID", { ascending: false });
-    console.log(data);
-    if (data.length > 0) {
-      console.log(data, "allnotes");
-      setAllNotes(data);
-    }
-    console.log(data, error, "online dta");
-  }
-   if(logged===false||logged===undefined){
-    const i: any = localStorage.getItem("note");
-    const note:any =JSON.parse(i);
-    console.log("got offline note",[JSON.parse(i)],"noteof i")
-    if(note!==null){
-       note[0]!==null && setAllNotes([note]);
-    }
-   }
+    // console.log("select allinvoked")
+    if (logged === true) {
+      const { data, error }: any = await supabase
+        .from("nota")
+        .select("DATA, UID,HEADING")
+        .match({ USERID: user.email })
+        .order("ID", { ascending: false });
 
-    
+      if (data.length > 0) {
+        // console.log(data, error, "online dta");
+        setAllNotes(data);
+      }
+    }
+    if (logged === false) {
+      const i: any = localStorage.getItem("note");
+      const note: any = JSON.parse(i);
+      // console.log("got offline note",[JSON.parse(i)],"noteof i")
+      if (note !== null) {
+        note[0] !== null && setAllNotes([note]);
+      }
+    }
   }
 
   async function deleteNote(UID: string | null | undefined) {
@@ -286,7 +289,7 @@ export const CProvider = ({ children }: any) => {
       .from("nota")
       .delete()
       .match({ UID: UID });
-    console.log(error,"eroro whn del");
+    console.log(error, "eroro whn del");
     console.log(error, deletedData, " del data");
     return deletedData;
   }
@@ -295,8 +298,9 @@ export const CProvider = ({ children }: any) => {
     <>
       <myCon.Provider
         value={{
+          setUser,
           getUser,
-       
+          saveNew,
           allNotes,
           setAllNotes,
           SelectAll,

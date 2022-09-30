@@ -2,23 +2,23 @@
     "short_name":"Nota",
     "name": "Nota",
     "description":"",
-    "theme_color": "#2e2e2e",
-    "background_color": "#2e2e2e",
+    "theme_color": "rgb(240, 239, 239)",
+    "background_color": "rgb(240, 239, 239)",
     "display": "standalone",
     "icons": [
       {
-        "src": "public/logo2.png",
+        "src": "/logo.png",
         "type": "image/png",
-        "sizes":"512x512",
+        "sizes":"207x207",
         "purpose": "maskable"
       },
       {
-        "src": "public/logo2.png",
+        "src": "/logo.png",
         "type": "image/png",
-        "sizes":"512x512",
+        "sizes":"207x207",
         "purpose": "any"
       }
     ],
-    "start_url": "*"
+    "start_url": "/"
  
   }
