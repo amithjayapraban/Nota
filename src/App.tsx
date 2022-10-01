@@ -35,6 +35,8 @@ function App() {
     allNotes,
   } = useContext(myCon);
 
+
+
   return (
     <CProvider>
       <div className="App flex max-h-[80vh]     margin-0  p-4 md:p-10   bg-mainbg  text-fontc flex-col ">

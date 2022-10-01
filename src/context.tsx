@@ -218,13 +218,15 @@ export const CProvider = ({ children }: any) => {
       .limit(1);
 
     if (logged === true && data) {
-      if (data.length > 0) {
+      // console.log(convertFromRaw(data[0].DATA), "from raw");
+     
         //  const html = JSON.parse(data.DATA.blocks);
 
-        const contentState: any = convertFromRaw(data[0].DATA.html);
+        const contentState: any = convertFromRaw(data[0].DATA);
+        // console.log(contentState, "cntn state");
         const newcon = EditorState.createWithContent(contentState);
         setEditorState(newcon);
-      }
+      
     }
     if (logged === false || logged === undefined) {
       const i: any = localStorage.getItem("note");
@@ -289,8 +291,8 @@ export const CProvider = ({ children }: any) => {
       .from("nota")
       .delete()
       .match({ UID: UID });
-    console.log(error, "eroro whn del");
-    console.log(error, deletedData, " del data");
+    // console.log(error, "eroro whn del");
+    // console.log(error, deletedData, " del data");
     return deletedData;
   }
 

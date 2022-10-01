@@ -158,7 +158,7 @@ const animationConfiguration2 = {
                       onClick={async () => {
                         const newcon = EditorState.createEmpty();
                         if (logged === true) {
-                          setEditorState(newcon);
+                          // setEditorState(newcon);
                         }
                         newcon && handleEdit(note.UID);
                       }}

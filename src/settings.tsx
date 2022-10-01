@@ -26,14 +26,14 @@ const animationConfiguration2 = {
   return (
     <div className="w-[100%] flex flex-col justify-start  mt-5   ">
       <div className=" text-2xl md:text-4xl flex items-center justify-between gap-3  font-sans cursor-default mb-4 font-[300]">
-      <Transition animationConfiguration={animationConfiguration2}> <p className=" text-5xl  settings  text-bg2 rounded">Settings </p>
+      <Transition animationConfiguration={animationConfiguration2}> <p className=" md:text-5xl text-3xl settings  text-bg2 rounded">Settings </p>
       </Transition>
       </div>
     <Transition animationConfiguration={animationConfiguration}>
       <div className="setting_menu relative  flex flex-col self-center md:self-center   py-8 items-center rounded-[3px] px-4   w-[100%] md:w-[100%] md:h-[30vw] h-[55vh]  mt-7 gap-3">
         {user.picture !== undefined ? (
           <img
-            className="w-[80px]  rounded-full"
+            className="w-[80px]  rounded-[10px]"
             src={user.picture}
           />
         ) : (
@@ -49,7 +49,7 @@ const animationConfiguration2 = {
             </svg>
           </div>
         )}
-        <h3 className="font-[600] p-2  mt-2 text-fontc">
+        <h3 className=" p-2  mt-2 text-fontc">
           {logged ? user.name && user.name : "Guest User"}
         </h3>
 

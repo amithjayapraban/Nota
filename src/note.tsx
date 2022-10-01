@@ -32,16 +32,17 @@ export default function Note({ logged }: Prop) {
   // console.log(uid.uid,"uiidddded");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchNote(uid.uid);
-  }, [allNotes]);
+  // useEffect(() => {
+  //   setNoteId(uid.uid);
+  //   fetchNote(uid.uid);
+  // }, [allNotes]);
 
   useEffect(() => {
     setNoteId(uid.uid);
-    if (uid.uid !== `new`) {
+    
       fetchNote(uid.uid);
-    }
-  }, []);
+
+  }, [ ]);
   const animationConfiguration = {
     initial: { opacity: 0,  },
     animate: { opacity: 1 },

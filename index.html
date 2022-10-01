@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="theme-color" content="" />
+    <meta name="theme-color" content="rgb(240, 239, 239)" />
     <link rel="icon" type="image/png" href="/logo.png" />
-    
+
     <link rel="shortcut icon" href="/logo.png" />
-    <link rel="apple-touch-icon" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -19,40 +19,16 @@
       defer
     ></script>
     <script src="https://accounts.google.com/gsi/client" defer></script>
-    <link
-      rel="manifest"
-      crossorigin="use-credentials"
-      href="/manifest.json"
-    />
 
     <title>Nota</title>
   </head>
   <body>
-    <script>
+    <script type="module">
+      import { registerSW } from "virtual:pwa-register";
 
-      
       if ("serviceWorker" in navigator) {
-        
-        window.addEventListener("load", function () {
-          navigator.serviceWorker
-            .register("/worker.js")
-            .then(
-              function (registration) {
-                console.log(
-                  "Worker registration successful",
-                  registration.scope
-                );
-              },
-              function (err) {
-                console.log("Worker registration failed", err);
-              }
-            )
-            .catch(function (err) {
-              console.log(err);
-            });
-        });
-      } else {
-        console.log("Service Worker is not supported by browser.");
+        // && !/localhost/.test(window.location)) {
+        registerSW();
       }
     </script>
     <div id="root"></div>
