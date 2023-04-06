@@ -1,18 +1,17 @@
 import { Suspense, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { myCon } from "./context";
+import { myCon } from "./Context";
 import { v4 as uuidv4 } from "uuid";
 import { EditorState } from "draft-js";
 import Transition from "./Transition";
 
 export default function Home() {
   const [greet, setGreet] = useState<string | undefined>(undefined);
-  const [showCard, setCard] = useState(true);
+  const [showCard, setCard] = useState(false);
 
   const navigate = useNavigate();
 
-  const { allNotes, logged, getUser, user, SelectAll, setEditorState } =
-    useContext(myCon);
+  const { allNotes, logged, SelectAll, setEditorState } = useContext(myCon);
 
   if (allNotes) var i = allNotes.length + 1;
   function handleEdit(noteId: string | undefined) {
@@ -20,9 +19,10 @@ export default function Home() {
   }
 
   useEffect(() => {
+    setCard(true);
     let v = localStorage.getItem("Card");
     v && setCard(JSON.parse(v));
-    getUser();
+
     SelectAll();
   }, []);
 
@@ -95,7 +95,7 @@ export default function Home() {
         className="flex  w-[100%] overflow-y-hidden md:min-h-[80vh] min-h-[72vh] relative  gap-3 justify-start items-start    flex-col"
       >
         <div className="flex   flex-col min-h-[15vh] md:min-h-[20vh] banner   gap-3  ">
-          {/* <Transition animationConfiguration={animationConfiguration2}> */}
+          <Transition animationConfiguration={animationConfiguration2}>
           <div className=" bg-bgc   w-full  bannertext flex flex-col items-start justify-end md:py-4 py-4 text-right  text-xl md:text-3xl text-black break-word flex-wrap rounded-md ">
             <span className="flex  w-[100%] text-bg2 text-3xl md:text-5xl text-left break-all ">
               {greet && greet}
@@ -105,25 +105,24 @@ export default function Home() {
               <br /> {month} {date.getDate()} {date.getFullYear()}
             </span>
           </div>
-          {/* </Transition> */}
+          </Transition>
         </div>
 
-        <div className="flex min-h-[max-content]  overflow-y-scroll p-1 flex-wrap items-center justify-auto  w-[100%] mt-3  gap-3  ">
+        <div className="flex h-[max-content]   overflow-y-scroll p-1 flex-wrap items-center justify-auto  w-[100%] mt-3  gap-3  ">
           <Suspense fallback={<p>Loading...</p>}>
             {allNotes &&
               allNotes.map((note) => {
                 i--;
                 console.log(note.UID);
                 return (
-                  // <Transition
-                  //   key={i}
-                  //   animationConfiguration={animationConfiguration}
-                  // >
+                  <Transition
+                    key={i}
+                    animationConfiguration={animationConfiguration}
+                  >
                   <div
                     onClick={async () => {
                       const newcon = EditorState.createEmpty();
                       if (logged === true) {
-                       
                       }
                       newcon && handleEdit(note.UID);
                     }}
@@ -132,21 +131,19 @@ export default function Home() {
                     {logged === true ? (
                       <p className="">{"Note" + ` ${i}`}</p>
                     ) : (
-                      <p className="">{"Offline Note" + ` ${i}`}</p>
+                      <p className="">{"Note" + ` ${i}`}</p>
                     )}
-                    
                   </div>
-                  // </Transition>
+                  </Transition>
                 );
               })}
           </Suspense>
         </div>
       </div>
-      {(user === undefined || (!logged && showCard == true)) && (
+      {!logged && showCard == true && (
         <div className="text-xs mod flex items-center px-4 break-words md:max-w-[70vw] max-w-[50vw]  md:h-[70px] h-[70px] bottom-6 md:bottom-12 text-bgc bg-bg2 rounded shadow  absolute z-[100] ">
-          To save your notes to cloud
+          Your notes will be saved in LocalStorage
           <br />
-          Settings &nbsp;&gt; &nbsp;Login with Google
         </div>
       )}
       <div
@@ -160,7 +157,6 @@ export default function Home() {
         }}
         className="bg-logogreen text-xl    text-fontc absolute bottom-6 right-6 md:right-12 md:bottom-12  transition-all cursor-pointer   md:h-[70px] md:w-[70px] w-[70px] h-[70px] flex flex-col justify-center items-center  p-4 rounded-full shadow   "
       >
-    
         <svg
           className="w-[24px] "
           clipRule="evenodd"

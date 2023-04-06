@@ -1,13 +1,9 @@
 import { useContext, useEffect } from "react";
 
-import {  useNavigate, useParams } from "react-router-dom";
-import {
-
-  Editor,
-
-} from "draft-js";
-import { Tools } from "./tools";
-import { myCon } from "./context";
+import { useParams } from "react-router-dom";
+import { Editor } from "draft-js";
+import { Tools } from "./Tools";
+import { myCon } from "./Context";
 import "draft-js/dist/Draft.css";
 import Transition from "./Transition";
 type Prop = {
@@ -17,7 +13,7 @@ type Prop = {
 export default function Note({ logged }: Prop) {
   const {
     editorState,
-    deleteNote,
+
     setEditorState,
     setNoteId,
     setAllNotes,
@@ -26,28 +22,20 @@ export default function Note({ logged }: Prop) {
     fetchNote,
   } = useContext(myCon);
   const uid = useParams();
-  // console.log(uid.uid,"uiidddded");
-  const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   setNoteId(uid.uid);
-  //   fetchNote(uid.uid);
-  // }, [allNotes]);
 
   useEffect(() => {
     setNoteId(uid.uid);
- 
-      fetchNote(uid.uid);
 
-  }, [ ]);
+    fetchNote(uid.uid);
+  }, []);
   const animationConfiguration = {
-    initial: { opacity: 0,  },
+    initial: { opacity: 0 },
     animate: { opacity: 1 },
     exit: { opacity: 0 },
-};
+  };
 
   return (
-    // <Transition animationConfiguration={animationConfiguration}>
+    <Transition animationConfiguration={animationConfiguration}>
     <div className="flex main_note justify-between md:justify-start flex-col relative gap-3  mt-3">
       <div className="toolbar bg-bgc rounded-md  border-fontc flex flex-wrap  items-baseline">
         <Tools />
@@ -58,6 +46,6 @@ export default function Note({ logged }: Prop) {
         spellCheck={true}
       />
     </div>
-    // </Transition>
+    </Transition>
   );
 }

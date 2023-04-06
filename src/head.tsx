@@ -1,21 +1,22 @@
-import  { useContext } from "react";
-import { useNavigate} from "react-router-dom";
-import { myCon } from "./context";
+import { useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { myCon } from "./Context";
 type Props = {
   editMode: boolean;
 };
 
 export const Head = ({ editMode }: Props) => {
-  const { Edit,  SelectAll } = useContext(myCon);
+  const { Edit } = useContext(myCon);
   const location = window.location.pathname.toString();
   const navigate = useNavigate();
-
+  const { uid } = useParams();
   return (
     <div className="sticky top-0 head z-[200000]  grid mb-5 grid-cols-3 w-[100%] text-fontc">
       {/* <img className='col-start-1 cursor-pointer self-center' src="/src/assets/logo.svg" onClick={() => {navigate('/home') }}   /> */}
       <svg
         className="col-start-1 cursor-pointer self-center"
         onClick={() => {
+      
           navigate("/");
         }}
         width="34"
@@ -46,7 +47,7 @@ export const Head = ({ editMode }: Props) => {
               navigate("/settings");
             }}
           >
-            Settings
+            More
           </button>
         )}
         {location.match("/note") && (
@@ -54,30 +55,12 @@ export const Head = ({ editMode }: Props) => {
             <button
               className="md:hover:text-white outline-none  md:hover:bg-bg2 p-2 font-sans font-[700]  rounded-[2px]   "
               onClick={() => {
+                Edit(uid);
                 navigate("/");
               }}
             >
               Back
             </button>{" "}
-            {editMode ? (
-              <button
-                onClick={() => {
-                  Edit();
-                }}
-                className="font-sans font-[700] md:hover:text-white  md:hover:bg-bg2 p-2 rounded-[2px] ml-2 "
-              >
-                Save
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  Edit();
-                }}
-                className="font-sans font-[700] hover:text-white hover:bg-bg2 p-2 rounded-[2px] ml-2 "
-              >
-                Edit
-              </button>
-            )}
           </div>
         )}
         {location.match("/settings") && (

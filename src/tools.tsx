@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { EditorState, RichUtils } from "draft-js";
-import { myCon } from "./context";
+import { myCon } from "./Context";
 import { useNavigate, useParams } from "react-router-dom";
 
 const BLOCK_TYPES = [
@@ -22,24 +22,10 @@ var inlineTypes = [
 ];
 
 export const Tools = () => {
-  const { logged, setAllNotes, deleteNote, editorState, setEditorState } =
+  const { logged, setAllNotes, handleDel, editorState, setEditorState } =
     useContext(myCon);
   const uid = useParams();
-  var handleOfflineDel = (d: any) => {
-    const i: any = localStorage.getItem("note");
-    const state = JSON.parse(i);
-    let len = state.length - 1,
-      iterator = 0;
-    for (let k of state) {
-      if (k.UID == uid.uid) {
-        state.splice(iterator, 1);
-        break;
-      }
-      iterator += 1;
-    }
 
-    localStorage.setItem("note", JSON.stringify(state));
-  };
   const navigate = useNavigate();
   return (
     <div className="RichEditor-controls flex margin-0  justify-evenly  gap-2 flex-wrap">
@@ -51,14 +37,9 @@ export const Tools = () => {
       ))}
 
       <button
-        onClick={async () => {
-          if (logged !== undefined || !logged) {
-            handleOfflineDel(uid);
-            navigate("/");
-          } else if (await deleteNote(uid.uid)) {
-            console.log("navigate");
-            navigate("/");
-          }
+        onClick={() => {
+          handleDel(uid);
+          navigate("/");
         }}
         className="flex ml-auto justify-center px-2 md:border-none transition w-[max-content] h-[36px]  items-center text-sm  rounded-[3px] text-red-500"
       >

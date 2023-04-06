@@ -1,18 +1,13 @@
 import { useContext, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  
-} from "react-router-dom";
-import { Head } from "./head";
-import Home from "./home";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Note from "./note";
-import Settings from "./settings";
+import Home from "./Home";
 
-import { CProvider, myCon } from "./context";
+import Note from "./Note";
+import More from "./More";
 
+import { CProvider, myCon } from "./Context";
+import { Head } from "./Head";
 
 function App() {
   const { setNoteId, noteId, Edit } = useContext(myCon);
@@ -23,7 +18,7 @@ function App() {
 
   return (
     <CProvider>
-      <div className="App flex max-h-[80vh]     margin-0  p-4 md:p-10   bg-mainbg  text-fontc flex-col ">
+      <div className="App flex max-h-[80vh]     margin-0  p-4 md:p-10     text-fontc flex-col ">
         <Router>
           <Head editMode={editMode} />
 
@@ -33,7 +28,7 @@ function App() {
               path="/note/:uid"
               element={<Note logged={logged} setNoteId={setNoteId} />}
             />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings" element={<More />} />
           </Routes>
         </Router>
       </div>
