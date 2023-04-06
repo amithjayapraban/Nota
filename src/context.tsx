@@ -1,20 +1,22 @@
-import { createContext, SetStateAction, useMemo, useState } from "react";
-import { useEffect } from "react";
+import { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import {
-  DraftBlockType,
-  Editor,
-  EditorState,
-  RichUtils,
-  convertToRaw,
-  convertFromRaw,
-} from "draft-js";
-import { createClient, SupabaseClient, User } from "@supabase/supabase-js";
-import { useParams } from "react-router-dom";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
+export interface allNote {
+  DATA: { html: string };
+  UID: string | undefined;
+  HEADING: string | undefined;
+}
+
+export interface user {
+  picture: string | undefined;
+  name: string | undefined;
+  email: string | undefined;
+}
 const contextDefaultState = {
-  editorState: EditorState,
-  setEditorState: () => EditorState.createEmpty(),
+  editorState: EditorState.createEmpty(),
+  setEditorState: () => {},
   logged: false,
   Edit: () => {},
   noteId: undefined,
@@ -30,9 +32,9 @@ const contextDefaultState = {
   setLogged: () => {},
   allNotes: undefined,
   user: {
-    picture: undefined,
-    name: undefined,
-    email: undefined,
+    picture: "",
+    name: "",
+    email: "",
   },
   getUser: () => {},
   setUser: () => {},
@@ -44,57 +46,32 @@ export interface CInterface {
   editorState: any;
   setEditorState: any;
   logged: boolean | undefined;
-  Edit: Function;
+  Edit: () => void;
   noteId: string | undefined | null;
-  setNoteId: Function;
-  fetchNote: Function;
-  saveNew: Function;
+  setNoteId: (a: string | undefined) => void;
+  fetchNote: (uid: string | undefined) => void;
+  saveNew: (data: any, id: any, heading?: any) => void;
   supabase: any;
-  signout: Function;
-  signIn: Function;
-  deleteNote: Function;
-  SelectAll: Function;
-  setAllNotes: Function;
-  getUser: Function;
-  allNotes:
-    | {
-        DATA: { html: string };
-        UID: string | undefined;
-        HEADING: string | undefined;
-      }[]
-    | undefined;
-  user: {
-    picture: string | undefined;
-    name: string | undefined;
-    email: string | undefined;
-  };
-  setLogged: Function;
-  setUser: Function;
+  signout: () => void;
+  signIn: () => void;
+  deleteNote: (UID: string | null | undefined) => any;
+  SelectAll: () => void;
+  setAllNotes: (a: allNote[] | undefined) => void;
+  getUser: () => void;
+  allNotes: allNote[] | undefined;
+  user: user;
+  setLogged(a: boolean): void;
+  setUser(a: user): void;
 }
 
 export const CProvider = ({ children }: any) => {
   const [logged, setLogged] = useState<boolean | undefined>(false);
-  const [user, setUser] = useState<{
-    picture: string | undefined;
-    name: string | undefined;
-    email: string | undefined;
-  }>({
-    picture: undefined,
-    name: undefined,
-    email: undefined,
-  });
-  const [noteId, setNoteId] = useState<string | null>();
+  const [user, setUser] = useState<user>({ picture: "", email: "", name: "" });
+  const [noteId, setNoteId] = useState<string | null | undefined>();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-  const [allNotes, setAllNotes] = useState<
-    | {
-        DATA: { html: string };
-        UID: string | undefined;
-        HEADING: string | undefined;
-      }[]
-    | undefined
-  >();
+  const [allNotes, setAllNotes] = useState<allNote[] | undefined>();
 
   const options = {
     schema: "public",
@@ -103,28 +80,13 @@ export const CProvider = ({ children }: any) => {
     persistSession: true,
     detectSessionInUrl: true,
   };
-  var key: any ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6Y2Fyc2Z2bXdobWlpbW96amhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjI4MzUxODcsImV4cCI6MTk3ODQxMTE4N30.12FtWNOX8P0dRBKd54BxV0VZsjsdH_-NiegUadpLoDk"
+  var key: any =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6Y2Fyc2Z2bXdobWlpbW96amhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjI4MzUxODcsImV4cCI6MTk3ODQxMTE4N30.12FtWNOX8P0dRBKd54BxV0VZsjsdH_-NiegUadpLoDk";
   const supabase = createClient(
     "https://azcarsfvmwhmiimozjhf.supabase.co",
     key,
     options
   );
-
-  // supabase.auth.onAuthStateChange((event: any, session: any) => {
-  //   if (session) {
-  //     console.log(event, session.user.user_metadata);
-  //     setLogged(true);
-  //     setUser(session.user.user_metadata);
-  //   }
-  //   else {
-  //     setLogged(false);
-  //     setUser({
-  //       picture: undefined,
-  //       name: undefined,
-  //       email: undefined,
-  //     });
-  //   }
-  // });
 
   async function signIn() {
     const a: any = await supabase.auth.signIn(
@@ -135,7 +97,6 @@ export const CProvider = ({ children }: any) => {
         redirectTo: "https://nota-nu.vercel.app/settings",
       }
     );
-  
   }
 
   async function signout() {
@@ -150,19 +111,32 @@ export const CProvider = ({ children }: any) => {
   }
 
   const Edit = () => {
-    // console.log("uid when editing");
     const contentState = editorState.getCurrentContent();
-    // console.log(contentState, "contentstate before storing");
-
+    console.log(logged);
     const rawData = convertToRaw(contentState);
     var data: any = { html: rawData };
-    // console.log(data.html, "to raw");
+
     if (logged == false || logged == undefined) {
-      localStorage.setItem("note", JSON.stringify(data.html));
+      console.log(noteId)
+      let offNotes=localStorage.getItem('note');
+      var array:any=[];
+      if (offNotes){
+         array= JSON.parse(offNotes);
+        
+        array.splice(0,0,{ html: data.html, UID: noteId });
+        console.log(array)
+        localStorage.setItem("note", JSON.stringify(array));
+      }else{
+         localStorage.setItem(
+           "note",
+           JSON.stringify([{ html: data.html, UID: noteId }])
+         );
+      }
+      
       return data;
     } else {
-      if (noteId === null || noteId === "new") {
-        const id = uuidv4();
+      if (noteId === null || noteId ===undefined || noteId === "new") {
+        const id: string = uuidv4();
         console.log(id, "uuid genertaed");
         saveNew(data, id);
         return data;
@@ -172,10 +146,13 @@ export const CProvider = ({ children }: any) => {
         return data;
       }
     }
-    // console.log("qqdqdqd");
   };
 
-  async function saveNew(data: any, id: any, heading?: any) {
+  async function saveNew(
+    data: any,
+    id: string | null | undefined,
+    heading?: any
+  ) {
     const { error } = await supabase.from("nota").insert([
       {
         UID: `${id}`,
@@ -184,13 +161,14 @@ export const CProvider = ({ children }: any) => {
         HEADING: "heading",
       },
     ]);
+    console.log(error)
   }
 
   async function Modify(
     UID: string | null | undefined,
     html: any,
     heading?: any
-  ) {
+  ): Promise<void> {
     const { data, error } = await supabase
       .from("nota")
       .update({ DATA: html, HEADING: heading })
@@ -206,11 +184,9 @@ export const CProvider = ({ children }: any) => {
         },
       ]);
     }
-    // setNoteId(null);
   }
 
-  async function fetchNote(uid: any) {
-    // setNoteId(uid);
+  async function fetchNote(uid: string | undefined) {
     const { data, error }: any = await supabase
       .from("nota")
       .select("DATA, UID")
@@ -218,21 +194,22 @@ export const CProvider = ({ children }: any) => {
       .limit(1);
 
     if (logged === true && data) {
-      // console.log(convertFromRaw(data[0].DATA), "from raw");
-     
-        //  const html = JSON.parse(data.DATA.blocks);
+      const contentState: any = convertFromRaw(data[0].DATA);
 
-        const contentState: any = convertFromRaw(data[0].DATA);
-        // console.log(contentState, "cntn state");
-        const newcon = EditorState.createWithContent(contentState);
-        setEditorState(newcon);
-      
+      const newcon = EditorState.createWithContent(contentState);
+      setEditorState(newcon);
     }
     if (logged === false || logged === undefined) {
       const i: any = localStorage.getItem("note");
       const state = JSON.parse(i);
-      const contentState: any = convertFromRaw(state);
-      // console.log(contentState, "from raw");
+      console.log(state,uid);
+      let st;
+      for (let k of state){
+        if (k.UID==uid) st=k.html
+       
+      }
+      
+      const contentState: any = convertFromRaw(st);
       const newcon = EditorState.createWithContent(contentState);
       setEditorState(newcon);
     }
@@ -244,10 +221,6 @@ export const CProvider = ({ children }: any) => {
       if (userd.aud == "authenticated") {
         setUser(userd.user_metadata);
         setLogged(true);
-
-        // console.log("getuser invoked");
-
-        // return userd.user_metadata;
       } else {
         setLogged(false);
         setUser({
@@ -255,35 +228,33 @@ export const CProvider = ({ children }: any) => {
           name: undefined,
           email: undefined,
         });
-
-        // console.log(logged,"logged in f");
-        // SelectAll();
       }
     }
   }
 
   async function SelectAll() {
-    // console.log("select allinvoked")
     if (logged === true) {
       const { data, error }: any = await supabase
         .from("nota")
         .select("DATA, UID,HEADING")
         .match({ USERID: user.email })
         .order("ID", { ascending: false });
-
+      console.log(data, error);
       if (data.length > 0) {
-        // console.log(data, error, "online dta");
+        console.log(data);
         setAllNotes(data);
       }
     }
     if (logged === false) {
       const i: any = localStorage.getItem("note");
       const note: any = JSON.parse(i);
-      // console.log("got offline note",[JSON.parse(i)],"noteof i")
+
       if (note !== null) {
-        note[0] !== null && setAllNotes([note]);
+        note[0] !== null && setAllNotes(note);
       }
     }
+
+    console.log(allNotes, "all notes");
   }
 
   async function deleteNote(UID: string | null | undefined) {
@@ -291,8 +262,6 @@ export const CProvider = ({ children }: any) => {
       .from("nota")
       .delete()
       .match({ UID: UID });
-    // console.log(error, "eroro whn del");
-    // console.log(error, deletedData, " del data");
     return deletedData;
   }
 

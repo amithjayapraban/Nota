@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { EditorState, RichUtils } from "draft-js";
 import { myCon } from "./context";
 import { useNavigate, useParams } from "react-router-dom";
@@ -25,25 +25,37 @@ export const Tools = () => {
   const { logged, setAllNotes, deleteNote, editorState, setEditorState } =
     useContext(myCon);
   const uid = useParams();
+  var handleOfflineDel = (d: any) => {
+    const i: any = localStorage.getItem("note");
+    const state = JSON.parse(i);
+    let len = state.length - 1,
+      iterator = 0;
+    for (let k of state) {
+      if (k.UID == uid.uid) {
+        state.splice(iterator, 1);
+        break;
+      }
+      iterator += 1;
+    }
 
+    localStorage.setItem("note", JSON.stringify(state));
+  };
   const navigate = useNavigate();
   return (
     <div className="RichEditor-controls flex margin-0  justify-evenly  gap-2 flex-wrap">
-      {inlineTypes.map((type) => (
-        <ButtonInline type={type} />
+      {inlineTypes.map((type, i) => (
+        <ButtonInline key={i} type={type} />
       ))}
-      {BLOCK_TYPES.map((type) => (
-        <ButtonBlock type={type} />
+      {BLOCK_TYPES.map((type, i) => (
+        <ButtonBlock key={i} type={type} />
       ))}
 
       <button
         onClick={async () => {
           if (logged !== undefined || !logged) {
-            localStorage.removeItem("note");
-            setAllNotes(null);
+            handleOfflineDel(uid);
             navigate("/");
-          }
-          if (await deleteNote(uid.uid)) {
+          } else if (await deleteNote(uid.uid)) {
             console.log("navigate");
             navigate("/");
           }

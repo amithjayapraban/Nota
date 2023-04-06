@@ -10,7 +10,7 @@
   --icon: #FFE776;
   --sun: hidden;
   --moon: unset;
-  ---codebg: rgb(170, 86, 2);
+  ---codebg: rgba(10,10,20,1);
   ---codetext: #ffffff;
   --bg3: #404340;
   --mainbg: rgb(240, 239, 239);
@@ -148,10 +148,11 @@ blockquote {
 }
 pre {
   background-color: var(---codebg);
-  color: var(---codetext);
-  padding: 3px;
-  border-radius: 2px;
-
+  font-family:monospace;
+  color: rgba(22,255,255);
+  padding: 8px;
+  border-radius: 4px;
+  width:max-content;
   max-width: 90%;
   min-width: 40vw;
 }

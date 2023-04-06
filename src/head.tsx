@@ -1,12 +1,12 @@
-import React, { useContext, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import  { useContext } from "react";
+import { useNavigate} from "react-router-dom";
 import { myCon } from "./context";
 type Props = {
   editMode: boolean;
 };
 
 export const Head = ({ editMode }: Props) => {
-  const { Edit, logged, SelectAll } = useContext(myCon);
+  const { Edit,  SelectAll } = useContext(myCon);
   const location = window.location.pathname.toString();
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ export const Head = ({ editMode }: Props) => {
           stroke="var(--icon) "
           strokeWidth="2"
         />
-        
+
         <path
           d="M7.648 31V8.6H9.6L25.056 28.056H24.032V8.6H26.368V31H24.416L8.992 11.544H10.016V31H7.648Z"
           fill="var(--bg2) "
@@ -61,11 +61,8 @@ export const Head = ({ editMode }: Props) => {
             </button>{" "}
             {editMode ? (
               <button
-                onClick={async() => {
-                const a:any= await Edit();
-                 if(a){console.log(a,"aa"); navigate("/");
-                setTimeout(()=>{SelectAll();},1000);
-                }
+                onClick={() => {
+                  Edit();
                 }}
                 className="font-sans font-[700] md:hover:text-white  md:hover:bg-bg2 p-2 rounded-[2px] ml-2 "
               >

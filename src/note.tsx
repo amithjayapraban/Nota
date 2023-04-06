@@ -1,13 +1,10 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect } from "react";
+
+import {  useNavigate, useParams } from "react-router-dom";
 import {
-  DraftBlockType,
-  convertFromHTML,
-  convertFromRaw,
+
   Editor,
-  EditorState,
-  RichUtils,
+
 } from "draft-js";
 import { Tools } from "./tools";
 import { myCon } from "./context";
@@ -39,7 +36,7 @@ export default function Note({ logged }: Prop) {
 
   useEffect(() => {
     setNoteId(uid.uid);
-    
+ 
       fetchNote(uid.uid);
 
   }, [ ]);
@@ -50,7 +47,7 @@ export default function Note({ logged }: Prop) {
 };
 
   return (
-    <Transition animationConfiguration={animationConfiguration}>
+    // <Transition animationConfiguration={animationConfiguration}>
     <div className="flex main_note justify-between md:justify-start flex-col relative gap-3  mt-3">
       <div className="toolbar bg-bgc rounded-md  border-fontc flex flex-wrap  items-baseline">
         <Tools />
@@ -60,6 +57,7 @@ export default function Note({ logged }: Prop) {
         onChange={setEditorState}
         spellCheck={true}
       />
-    </div></Transition>
+    </div>
+    // </Transition>
   );
 }
