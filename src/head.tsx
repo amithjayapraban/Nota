@@ -1,11 +1,8 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { myCon } from "./Context";
-type Props = {
-  editMode: boolean;
-};
 
-export const Head = ({ editMode }: Props) => {
+export const Head = () => {
   const { Edit } = useContext(myCon);
   const location = window.location.pathname.toString();
   const navigate = useNavigate();

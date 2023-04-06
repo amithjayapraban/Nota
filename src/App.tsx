@@ -10,9 +10,9 @@ import { CProvider, myCon } from "./Context";
 import { Head } from "./Head";
 
 function App() {
-  const { setNoteId, noteId, Edit } = useContext(myCon);
+  const { setNoteId } = useContext(myCon);
 
-  const [editMode, setEditmode] = useState(true);
+  
 
   const { logged } = useContext(myCon);
 
@@ -20,7 +20,7 @@ function App() {
     <CProvider>
       <div className="App flex max-h-[80vh]     margin-0  p-4 md:p-10     text-fontc flex-col ">
         <Router>
-          <Head editMode={editMode} />
+          <Head  />
 
           <Routes>
             <Route path="/" element={<Home />} />
