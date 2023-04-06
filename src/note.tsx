@@ -2,8 +2,8 @@ import { useContext, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 import { Editor } from "draft-js";
-import { Tools } from "./Tools";
-import { myCon } from "./Context";
+import { Tools } from "./tools";
+import { myCon } from "./context";
 import "draft-js/dist/Draft.css";
 import Transition from "./Transition";
 type Prop = {
@@ -36,16 +36,16 @@ export default function Note({ logged }: Prop) {
 
   return (
     <Transition animationConfiguration={animationConfiguration}>
-    <div className="flex main_note justify-between md:justify-start flex-col relative gap-3  mt-3">
-      <div className="toolbar bg-bgc rounded-md  border-fontc flex flex-wrap  items-baseline">
-        <Tools />
+      <div className="flex main_note justify-between md:justify-start flex-col relative gap-3  mt-3">
+        <div className="toolbar bg-bgc rounded-md  border-fontc flex flex-wrap  items-baseline">
+          <Tools />
+        </div>
+        <Editor
+          editorState={editorState}
+          onChange={setEditorState}
+          spellCheck={true}
+        />
       </div>
-      <Editor
-        editorState={editorState}
-        onChange={setEditorState}
-        spellCheck={true}
-      />
-    </div>
     </Transition>
   );
 }

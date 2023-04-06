@@ -1,18 +1,16 @@
 import { useContext, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Home from "./Home";
+import Home from "./home";
 
-import Note from "./Note";
-import More from "./More";
+import Note from "./note";
+import More from "./more";
 
-import { CProvider, myCon } from "./Context";
-import { Head } from "./Head";
+import { CProvider, myCon } from "./context";
+import { Head } from "./head";
 
 function App() {
   const { setNoteId } = useContext(myCon);
-
-  
 
   const { logged } = useContext(myCon);
 
@@ -20,7 +18,7 @@ function App() {
     <CProvider>
       <div className="App flex max-h-[80vh]     margin-0  p-4 md:p-10     text-fontc flex-col ">
         <Router>
-          <Head  />
+          <Head />
 
           <Routes>
             <Route path="/" element={<Home />} />

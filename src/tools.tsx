@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { EditorState, RichUtils } from "draft-js";
-import { myCon } from "./Context";
+import { myCon } from "./context";
 import { useNavigate, useParams } from "react-router-dom";
 
 const BLOCK_TYPES = [

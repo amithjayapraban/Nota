@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { myCon } from "./Context";
+import { myCon } from "./context";
 
 export const Head = () => {
   const { Edit } = useContext(myCon);
@@ -13,7 +13,6 @@ export const Head = () => {
       <svg
         className="col-start-1 cursor-pointer self-center"
         onClick={() => {
-      
           navigate("/");
         }}
         width="34"
