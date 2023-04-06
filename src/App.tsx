@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./home";
 
 import Note from "./note";
-import More from "./more";
+import More from "./More";
 
 import { CProvider, myCon } from "./context";
 import { Head } from "./head";
