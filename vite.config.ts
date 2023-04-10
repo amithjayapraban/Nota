@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from "vite-plugin-pwa"
+import { ViteMinifyPlugin } from "vite-plugin-minify";
 // https://vitejs.dev/config/
 
 
@@ -8,40 +9,42 @@ import { VitePWA } from "vite-plugin-pwa"
 
 
 export default defineConfig({
-  plugins: [react(), VitePWA({
-      registerType: 'autoUpdate',
+  plugins: [
+    react(),
+    ViteMinifyPlugin({}),
+    VitePWA({
+      registerType: "autoUpdate",
       devOptions: {
-        enabled: true
+        enabled: true,
       },
-      base: '/',
-      includeAssets: ['logo.png'],
+      base: "/",
+      includeAssets: ["logo.png"],
       manifest: {
-        name: 'Nota',
-        short_name: 'Nota',
-        
-        description: 'Note taking App',
-        theme_color: 'rgb(240, 239, 239)',
+        name: "Nota",
+        short_name: "Nota",
+
+        description: "Note taking App",
+        theme_color: "rgb(240, 239, 239)",
         icons: [
           {
-            src: 'logo.png',
-            sizes: '207x207',
-            type: 'image/png'
+            src: "logo.png",
+            sizes: "207x207",
+            type: "image/png",
           },
           {
-            src: 'logo.png',
-            sizes: '207x207',
-            type: 'image/png',
-            purpose: 'any maskable', 
-            
+            src: "logo.png",
+            sizes: "207x207",
+            type: "image/png",
+            purpose: "any maskable",
           },
-          
-        ]
-      }
-    })],
+        ],
+      },
+    }),
+  ],
   server: {
-    port:3000
+    port: 3000,
   },
   define: {
-    // "global": {},
+    // global: {},
   },
-})
+});

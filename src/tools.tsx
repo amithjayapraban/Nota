@@ -22,7 +22,7 @@ var inlineTypes = [
 ];
 
 export const Tools = () => {
-  const { logged, setAllNotes, handleDel, editorState, setEditorState } =
+  const {  handleDel, editorState, setEditorState } =
     useContext(myCon);
   const uid = useParams();
 

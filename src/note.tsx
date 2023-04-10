@@ -28,6 +28,7 @@ export default function Note({ logged }: Prop) {
 
     fetchNote(uid.uid);
   }, []);
+
   const animationConfiguration = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
@@ -35,7 +36,7 @@ export default function Note({ logged }: Prop) {
   };
 
   return (
-    <Transition animationConfiguration={animationConfiguration}>
+    // <Transition animationConfiguration={animationConfiguration}>
       <div className="flex main_note justify-between md:justify-start flex-col relative gap-3  mt-3">
         <div className="toolbar bg-bgc rounded-md  border-fontc flex flex-wrap  items-baseline">
           <Tools />
@@ -46,6 +47,6 @@ export default function Note({ logged }: Prop) {
           spellCheck={true}
         />
       </div>
-    </Transition>
+    // </Transition>
   );
 }

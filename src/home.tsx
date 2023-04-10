@@ -22,13 +22,11 @@ export default function Home() {
     setCard(true);
     let v = localStorage.getItem("Card");
     v && setCard(JSON.parse(v));
-
+ console.log('dd');
     SelectAll();
   }, []);
 
-  useEffect(() => {
-    SelectAll();
-  }, [logged]);
+ 
 
   const days = [
     "Sunday",
@@ -95,7 +93,7 @@ export default function Home() {
         className="flex  w-[100%] overflow-y-hidden md:min-h-[80vh] min-h-[72vh] relative  gap-3 justify-start items-start    flex-col"
       >
         <div className="flex   flex-col min-h-[15vh] md:min-h-[20vh] banner   gap-3  ">
-          <Transition animationConfiguration={animationConfiguration2}>
+          {/* <Transition animationConfiguration={animationConfiguration2}> */}
             <div className=" bg-bgc   w-full  bannertext flex flex-col items-start justify-end md:py-4 py-4 text-right  text-xl md:text-3xl text-black break-word flex-wrap rounded-md ">
               <span className="flex  w-[100%] text-bg2 text-3xl md:text-5xl text-left break-all ">
                 {greet && greet}
@@ -105,7 +103,7 @@ export default function Home() {
                 <br /> {month} {date.getDate()} {date.getFullYear()}
               </span>
             </div>
-          </Transition>
+          {/* </Transition> */}
         </div>
 
         <div className="flex h-[max-content]   overflow-y-scroll p-1 flex-wrap items-center justify-auto  w-[100%] mt-3  gap-3  ">
@@ -113,12 +111,12 @@ export default function Home() {
             {allNotes &&
               allNotes.map((note) => {
                 i--;
-                console.log(note.UID);
+               
                 return (
-                  <Transition
-                    key={i}
-                    animationConfiguration={animationConfiguration}
-                  >
+                  // <Transition
+                  //   key={i}
+                  //   animationConfiguration={animationConfiguration}
+                  // >
                     <div
                       onClick={async () => {
                         const newcon = EditorState.createEmpty();
@@ -134,7 +132,7 @@ export default function Home() {
                         <p className="">{"Note" + ` ${i}`}</p>
                       )}
                     </div>
-                  </Transition>
+                  // </Transition>
                 );
               })}
           </Suspense>

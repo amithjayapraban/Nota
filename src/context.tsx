@@ -104,7 +104,7 @@ export const CProvider = ({ children }: any) => {
     if (logged === false || logged === undefined) {
       const i: any = localStorage.getItem("note");
       const state = JSON.parse(i);
-      console.log(state, uid);
+      console.log(state);
       let st;
       for (let k of state) {
         if (k.UID == uid) st = k.html;
