@@ -5,13 +5,13 @@ import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 export interface allNote {
   DATA: { html: string };
   UID: string | undefined;
-  HEADING: string | undefined;
+  Heading: string | undefined;
 }
 
 const contextDefaultState = {
   editorState: EditorState.createEmpty(),
   setEditorState: () => {},
-  logged: false,
+
   Edit: (id: any) => {},
   noteId: undefined,
   setNoteId: () => {},
@@ -29,7 +29,7 @@ export const myCon = createContext<CInterface>(contextDefaultState);
 export interface CInterface {
   editorState: any;
   setEditorState: any;
-  logged: boolean | undefined;
+
   Edit: (id: any) => void;
   noteId: string | undefined | null;
   setNoteId: (a: string | undefined) => void;
@@ -43,87 +43,77 @@ export interface CInterface {
 }
 
 export const CProvider = ({ children }: any) => {
-  const [logged, setLogged] = useState<boolean | undefined>(false);
-
   const [noteId, setNoteId] = useState<string | null | undefined>();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   const [allNotes, setAllNotes] = useState<allNote[] | undefined>();
 
-  const options = {
-    schema: "public",
-    headers: {},
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-  };
-
   const Edit = (uid: any) => {
     const contentState = editorState.getCurrentContent();
-    console.log(logged);
+
     const rawData = convertToRaw(contentState);
     var data: any = { html: rawData };
+    let Heading = data.html.blocks[0].text;
+    if (Heading.length > 0) Heading = Heading.slice(0, 12);
+    else Heading = "Untitled";
 
-    if (logged == false || logged == undefined) {
-      console.log(noteId);
-      let offNotes = localStorage.getItem("note");
-      var array: any = [];
-      if (offNotes) {
-        array = JSON.parse(offNotes);
+    let offNotes = localStorage.getItem("note");
+    var array: any = [];
+    if (offNotes) {
+      array = JSON.parse(offNotes);
 
-        let iterator = 0,
-          found = false;
-        for (let k of array) {
-          if (k.UID == noteId) {
-            found = true;
-            console.log(noteId);
-            array.splice(iterator, 1, { html: data.html, UID: noteId });
-            break;
-          }
-          iterator += 1;
+      let iterator = 0,
+        found = false;
+      for (let k of array) {
+        if (k.UID == noteId) {
+          found = true;
+          console.log(noteId);
+          array.splice(iterator, 1, {
+            html: data.html,
+            UID: noteId,
+            Heading,
+          });
+          break;
         }
-
-        if (!found) {
-          array.splice(0, 0, { html: data.html, UID: noteId });
-          console.log(array);
-        }
-        localStorage.setItem("note", JSON.stringify(array));
-      } else {
-        localStorage.setItem(
-          "note",
-          JSON.stringify([{ html: data.html, UID: noteId }])
-        );
+        iterator += 1;
       }
 
-      return data;
+      if (!found) {
+        array.splice(0, 0, { html: data.html, UID: noteId, Heading });
+        // console.log(array);
+      }
+      localStorage.setItem("note", JSON.stringify(array));
+    } else {
+      localStorage.setItem(
+        "note",
+        JSON.stringify([{ html: data.html, UID: noteId, Heading }])
+      );
     }
+
+    return data;
   };
 
   async function fetchNote(uid: string | undefined) {
-    if (logged === false || logged === undefined) {
-      const i: any = localStorage.getItem("note");
-      const state = JSON.parse(i);
-      console.log(state);
-      let st;
-      for (let k of state) {
-        if (k.UID == uid) st = k.html;
-      }
-
-      const contentState: any = convertFromRaw(st);
-      const newcon = EditorState.createWithContent(contentState);
-      setEditorState(newcon);
+    const i: any = localStorage.getItem("note");
+    const state = JSON.parse(i);
+    // console.table(state);
+    let st;
+    for (let k of state) {
+      if (k.UID == uid) st = k.html;
     }
+
+    const contentState: any = convertFromRaw(st);
+    const newcon = EditorState.createWithContent(contentState);
+    setEditorState(newcon);
   }
 
   async function SelectAll() {
-    if (logged === false) {
-      const i: any = localStorage.getItem("note");
-      const note: any = JSON.parse(i);
+    const i: any = localStorage.getItem("note");
+    const note: any = JSON.parse(i);
 
-      if (note !== null) {
-        note[0] !== null && setAllNotes(note);
-      }
+    if (note !== null) {
+      note[0] !== null && setAllNotes(note);
     }
   }
   var handleDel = (uid: any) => {
@@ -156,15 +146,11 @@ export const CProvider = ({ children }: any) => {
           allNotes,
           setAllNotes,
           SelectAll,
-
           editorState,
-
-          logged,
           Edit,
           noteId,
           setNoteId,
           fetchNote,
-
           setEditorState,
         }}
       >

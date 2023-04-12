@@ -11,7 +11,7 @@ export default function Home() {
 
   const navigate = useNavigate();
 
-  const { allNotes, logged, SelectAll, setEditorState } = useContext(myCon);
+  const { allNotes, SelectAll, setEditorState } = useContext(myCon);
 
   if (allNotes) var i = allNotes.length + 1;
   function handleEdit(noteId: string | undefined) {
@@ -22,11 +22,9 @@ export default function Home() {
     setCard(true);
     let v = localStorage.getItem("Card");
     v && setCard(JSON.parse(v));
- console.log('dd');
+    console.count("home");
     SelectAll();
   }, []);
-
- 
 
   const days = [
     "Sunday",
@@ -73,7 +71,7 @@ export default function Home() {
     }
   }, [hour]);
   const animationConfiguration = {
-    initial: { opacity: 0, x: -3 },
+    initial: { opacity: 0, x: 0 },
     animate: { opacity: 1, x: 0 },
     exit: { opacity: 0 },
   };
@@ -93,16 +91,16 @@ export default function Home() {
         className="flex  w-[100%] overflow-y-hidden md:min-h-[80vh] min-h-[72vh] relative  gap-3 justify-start items-start    flex-col"
       >
         <div className="flex   flex-col min-h-[15vh] md:min-h-[20vh] banner   gap-3  ">
-          {/* <Transition animationConfiguration={animationConfiguration2}> */}
-            <div className=" bg-bgc   w-full  bannertext flex flex-col items-start justify-end md:py-4 py-4 text-right  text-xl md:text-3xl text-black break-word flex-wrap rounded-md ">
-              <span className="flex  w-[100%] text-bg2 text-3xl md:text-5xl text-left break-all ">
-                {greet && greet}
-              </span>
-              <span className="text-left mt-2 text-fontc md:text-left ">
-                {day}
-                <br /> {month} {date.getDate()} {date.getFullYear()}
-              </span>
-            </div>
+          {/* <Transition animationConfiguration={animationConfiguration}> */}
+          <div className=" bg-bgc   w-full  bannertext flex flex-col items-start justify-end md:py-4 py-4 text-right  text-xl md:text-3xl text-black break-word flex-wrap rounded-md ">
+            <span className="flex  w-[100%] text-bg2 text-3xl md:text-5xl text-left break-all ">
+              {greet && greet}
+            </span>
+            <span className="text-left mt-2 text-fontc md:text-left ">
+              {day}
+              <br /> {month} {date.getDate()} {date.getFullYear()}
+            </span>
+          </div>
           {/* </Transition> */}
         </div>
 
@@ -110,35 +108,27 @@ export default function Home() {
           <Suspense fallback={<p>Loading...</p>}>
             {allNotes &&
               allNotes.map((note) => {
-                i--;
-               
                 return (
-                  // <Transition
-                  //   key={i}
-                  //   animationConfiguration={animationConfiguration}
-                  // >
+                  <Transition
+                    key={note.UID}
+                    animationConfiguration={animationConfiguration}
+                  >
                     <div
                       onClick={async () => {
                         const newcon = EditorState.createEmpty();
-                        if (logged === true) {
-                        }
                         newcon && handleEdit(note.UID);
                       }}
                       className="note flex-auto justify-self-auto   text-fontc font-[500]   transition-all cursor-pointer  md:w-[180px] max-w-[160px] min-w-[160px]  flex flex-col justify-end  break-all  p-4  flex-wrap px-6 md:min-h-[160px] min-h-[160px]  "
                     >
-                      {logged === true ? (
-                        <p className="">{"Note" + ` ${i}`}</p>
-                      ) : (
-                        <p className="">{"Note" + ` ${i}`}</p>
-                      )}
+                      <p className="">{` ${note.Heading}`}</p>
                     </div>
-                  // </Transition>
+                  </Transition>
                 );
               })}
           </Suspense>
         </div>
       </div>
-      {!logged && showCard == true && (
+      {showCard == true && (
         <div className="text-xs mod flex items-center px-4 break-words md:max-w-[70vw] max-w-[50vw]  md:h-[70px] h-[70px] bottom-6 md:bottom-12 text-bgc bg-bg2 rounded shadow  absolute z-[100] ">
           Your notes will be saved in LocalStorage
           <br />

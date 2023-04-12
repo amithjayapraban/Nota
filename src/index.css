@@ -7,10 +7,10 @@
   --bgc: rgb(240, 239, 239);
   --fontc: #404340;
   --bg2: #482426;
-  --icon: #FFE776;
+  --icon: #ffe776;
   --sun: hidden;
   --moon: unset;
-  ---codebg: rgba(10,10,20,1);
+  ---codebg: rgba(10, 10, 20, 1);
   ---codetext: #ffffff;
   --bg3: #404340;
   --mainbg: rgb(240, 239, 239);
@@ -18,7 +18,7 @@
 /* rgb(255, 221, 54); */
 
 .note {
-  border-radius:10px;
+  border-radius: 10px;
   /* border:2px solid  rgb(135, 70, 4, .71); */
   /* background-color: var(--bg2);
   color:var(--bgc); */
@@ -70,14 +70,13 @@ mark {
 .banner {
   position: relative;
   width: 100%;
-  
 }
 
 .toggle {
   cursor: pointer;
   transition: all 0s ease-in-out;
 }
-.head{
+.head {
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
@@ -148,11 +147,11 @@ blockquote {
 }
 pre {
   background-color: var(---codebg);
-  font-family:monospace;
-  color: rgba(22,255,255);
+  font-family: monospace;
+  color: rgba(22, 255, 255);
   padding: 8px;
   border-radius: 4px;
-  width:max-content;
+  width: max-content;
   max-width: 90%;
   min-width: 40vw;
 }

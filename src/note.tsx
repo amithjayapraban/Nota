@@ -1,30 +1,19 @@
 import { useContext, useEffect } from "react";
-
 import { useParams } from "react-router-dom";
 import { Editor } from "draft-js";
 import { Tools } from "./tools";
 import { myCon } from "./context";
 import "draft-js/dist/Draft.css";
 import Transition from "./Transition";
-type Prop = {
-  setNoteId: Function;
-  logged: boolean | undefined;
-};
-export default function Note({ logged }: Prop) {
-  const {
-    editorState,
 
-    setEditorState,
-    setNoteId,
-    setAllNotes,
-    allNotes,
-    Edit,
-    fetchNote,
-  } = useContext(myCon);
+export default function Note() {
+  const { editorState, setEditorState, setNoteId, fetchNote } =
+    useContext(myCon);
   const uid = useParams();
 
   useEffect(() => {
     setNoteId(uid.uid);
+    console.count("note");
 
     fetchNote(uid.uid);
   }, []);
@@ -36,7 +25,7 @@ export default function Note({ logged }: Prop) {
   };
 
   return (
-    // <Transition animationConfiguration={animationConfiguration}>
+    <Transition animationConfiguration={animationConfiguration}>
       <div className="flex main_note justify-between md:justify-start flex-col relative gap-3  mt-3">
         <div className="toolbar bg-bgc rounded-md  border-fontc flex flex-wrap  items-baseline">
           <Tools />
@@ -47,6 +36,6 @@ export default function Note({ logged }: Prop) {
           spellCheck={true}
         />
       </div>
-    // </Transition>
+    </Transition>
   );
 }

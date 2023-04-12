@@ -22,8 +22,7 @@ var inlineTypes = [
 ];
 
 export const Tools = () => {
-  const {  handleDel, editorState, setEditorState } =
-    useContext(myCon);
+  const { handleDel, editorState, setEditorState } = useContext(myCon);
   const uid = useParams();
 
   const navigate = useNavigate();
