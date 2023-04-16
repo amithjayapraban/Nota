@@ -119,7 +119,6 @@ export const ButtonInline = ({ type }: Prop) => {
     e.preventDefault();
     let type = e.target.value.toString();
     setEditorState(RichUtils.toggleInlineStyle(editorState, type));
-   
   };
 
   return (

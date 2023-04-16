@@ -12,7 +12,6 @@ export default function Home() {
   const navigate = useNavigate();
 
   const { SelectAll, setEditorState, change, setChange } = useContext(myCon);
-
   let allNotes = useMemo(() => {
     return SelectAll();
   }, [change]);

@@ -83,8 +83,7 @@ export const CProvider = ({ children }: any) => {
   function fetchNote(uid: string | undefined) {
     const i: any = localStorage.getItem("note");
     const state = JSON.parse(i);
-    console.count("fetch note");
-    // console.table(state);
+
     let st;
     for (let k of state) {
       if (k.UID == uid) st = k.html;
@@ -99,7 +98,6 @@ export const CProvider = ({ children }: any) => {
   function SelectAll() {
     const i: any = localStorage.getItem("note");
     const note: any = JSON.parse(i);
-    console.log("called select all");
 
     if (note !== null && note[0] !== null) return note;
   }
