@@ -140,7 +140,7 @@ export default function Home() {
           const newcon = EditorState.createEmpty();
           await setEditorState(newcon);
           setChange(!change);
-          id && navigate(`/note/${id}`);
+          id && navigate(`/note/${id}/new`);
         }}
         className="bg-logogreen text-xl    text-fontc absolute bottom-6 right-6 md:right-12 md:bottom-12  transition-all cursor-pointer   md:h-[70px] md:w-[70px] w-[70px] h-[70px] flex flex-col justify-center items-center  p-4 rounded-full shadow   "
       >

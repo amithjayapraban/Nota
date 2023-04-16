@@ -83,18 +83,21 @@ export const CProvider = ({ children }: any) => {
   function fetchNote(uid: string | undefined) {
     const i: any = localStorage.getItem("note");
     const state = JSON.parse(i);
-
-    let st;
-    for (let k of state) {
-      if (k.UID == uid) st = k.html;
-    }
-
-    if (st != null && st != undefined) {
-      const contentState: any = convertFromRaw(st);
-      const newcon = EditorState.createWithContent(contentState);
-      setEditorState(newcon);
-    } else if (st == undefined) {
+    if ((state.length = 0)) {
       setEditorState(editorState);
+    } else {
+      let st;
+      for (let k of state) {
+        if (k.UID == uid) st = k.html;
+      }
+
+      if (st != null && st != undefined) {
+        const contentState: any = convertFromRaw(st);
+        const newcon = EditorState.createWithContent(contentState);
+        setEditorState(newcon);
+      } else {
+        setEditorState(editorState);
+      }
     }
   }
 

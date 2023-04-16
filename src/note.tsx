@@ -9,11 +9,11 @@ import Transition from "./Transition";
 export default function Note() {
   const { editorState, setEditorState, setNoteId, fetchNote } =
     useContext(myCon);
-  const uid = useParams();
+  const uid: any = useParams();
 
   useEffect(() => {
     setNoteId(uid.uid);
-    fetchNote(uid.uid);
+    if (uid["*"] != "new") fetchNote(uid.uid);
   }, []);
 
   const animationConfiguration = {
