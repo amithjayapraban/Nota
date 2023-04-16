@@ -107,7 +107,7 @@ export const CProvider = ({ children }: any) => {
     let len = state.length,
       iterator = 0;
 
-    if (len && len == 1) {
+    if (len && len == 0) {
       state.pop();
       localStorage.setItem("note", JSON.stringify(state));
     } else {
