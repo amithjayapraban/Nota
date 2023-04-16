@@ -107,10 +107,7 @@ export const CProvider = ({ children }: any) => {
     let len = state.length,
       iterator = 0;
 
-    if (len && len == 0) {
-      state.pop();
-      localStorage.setItem("note", JSON.stringify(state));
-    } else {
+    if (len && len > 0) {
       for (let k of state) {
         if (k.UID == uid.uid) {
           state.splice(iterator, 1);
