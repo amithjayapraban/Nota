@@ -8,42 +8,28 @@ export interface allNote {
   Heading: string | undefined;
 }
 
-const contextDefaultState = {
-  editorState: EditorState.createEmpty(),
-  setEditorState: () => {},
-
-  Edit: (id: any) => {},
-  noteId: undefined,
-  setNoteId: () => {},
-  fetchNote: () => {},
-  handleDel: () => {},
-
-  setAllNotes: () => {},
-  SelectAll: () => {},
-
-  allNotes: undefined,
-};
-
-export const myCon = createContext<CInterface>(contextDefaultState);
+export const myCon = createContext<CInterface | undefined | any>(undefined);
 
 export interface CInterface {
   editorState: any;
   setEditorState: any;
 
-  Edit: (id: any) => void;
+  Edit: (id: any) => any;
   noteId: string | undefined | null;
   setNoteId: (a: string | undefined) => void;
   fetchNote: (uid: string | undefined) => void;
   handleDel: (a: any) => void;
 
-  SelectAll: () => void;
+  SelectAll: () => allNote[];
   setAllNotes: (a: allNote[] | undefined) => void;
-
+  change: number;
+  setChange: (a: number) => void;
   allNotes: allNote[] | undefined;
 }
 
 export const CProvider = ({ children }: any) => {
   const [noteId, setNoteId] = useState<string | null | undefined>();
+  let [change, setChange] = useState(false);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -94,27 +80,28 @@ export const CProvider = ({ children }: any) => {
     return data;
   };
 
-  async function fetchNote(uid: string | undefined) {
+  function fetchNote(uid: string | undefined) {
     const i: any = localStorage.getItem("note");
     const state = JSON.parse(i);
+    console.count("fetch note");
     // console.table(state);
     let st;
     for (let k of state) {
       if (k.UID == uid) st = k.html;
     }
-
-    const contentState: any = convertFromRaw(st);
-    const newcon = EditorState.createWithContent(contentState);
-    setEditorState(newcon);
+    if (st != null && st != undefined) {
+      const contentState: any = convertFromRaw(st);
+      const newcon = EditorState.createWithContent(contentState);
+      setEditorState(newcon);
+    }
   }
 
-  async function SelectAll() {
+  function SelectAll() {
     const i: any = localStorage.getItem("note");
     const note: any = JSON.parse(i);
+    console.log("called select all");
 
-    if (note !== null) {
-      note[0] !== null && setAllNotes(note);
-    }
+    if (note !== null && note[0] !== null) return note;
   }
   var handleDel = (uid: any) => {
     const i: any = localStorage.getItem("note");
@@ -143,6 +130,8 @@ export const CProvider = ({ children }: any) => {
       <myCon.Provider
         value={{
           handleDel,
+          change,
+          setChange,
           allNotes,
           setAllNotes,
           SelectAll,

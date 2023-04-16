@@ -1,4 +1,4 @@
-import { Suspense, useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { myCon } from "./context";
 import { v4 as uuidv4 } from "uuid";
@@ -11,7 +11,11 @@ export default function Home() {
 
   const navigate = useNavigate();
 
-  const { allNotes, SelectAll, setEditorState } = useContext(myCon);
+  const { SelectAll, setEditorState, change, setChange } = useContext(myCon);
+
+  let allNotes = useMemo(() => {
+    return SelectAll();
+  }, [change]);
 
   if (allNotes) var i = allNotes.length + 1;
   function handleEdit(noteId: string | undefined) {
@@ -22,8 +26,6 @@ export default function Home() {
     setCard(true);
     let v = localStorage.getItem("Card");
     v && setCard(JSON.parse(v));
-    console.count("home");
-    SelectAll();
   }, []);
 
   const days = [
@@ -105,27 +107,25 @@ export default function Home() {
         </div>
 
         <div className="flex h-[max-content]   overflow-y-scroll p-1 flex-wrap items-center justify-auto  w-[100%] mt-3  gap-3  ">
-          <Suspense fallback={<p>Loading...</p>}>
-            {allNotes &&
-              allNotes.map((note) => {
-                return (
-                  <Transition
-                    key={note.UID}
-                    animationConfiguration={animationConfiguration}
+          {allNotes &&
+            allNotes.map((note: any) => {
+              return (
+                <Transition
+                  key={note.UID}
+                  animationConfiguration={animationConfiguration}
+                >
+                  <div
+                    onClick={async () => {
+                      const newcon = EditorState.createEmpty();
+                      newcon && handleEdit(note.UID);
+                    }}
+                    className="note flex-auto justify-self-auto   text-fontc font-[500]   transition-all cursor-pointer  md:w-[180px] max-w-[160px] min-w-[160px]  flex flex-col justify-end  break-all  p-4  flex-wrap px-6 md:min-h-[160px] min-h-[160px]  "
                   >
-                    <div
-                      onClick={async () => {
-                        const newcon = EditorState.createEmpty();
-                        newcon && handleEdit(note.UID);
-                      }}
-                      className="note flex-auto justify-self-auto   text-fontc font-[500]   transition-all cursor-pointer  md:w-[180px] max-w-[160px] min-w-[160px]  flex flex-col justify-end  break-all  p-4  flex-wrap px-6 md:min-h-[160px] min-h-[160px]  "
-                    >
-                      <p className="">{` ${note.Heading}`}</p>
-                    </div>
-                  </Transition>
-                );
-              })}
-          </Suspense>
+                    <p className="">{` ${note.Heading}`}</p>
+                  </div>
+                </Transition>
+              );
+            })}
         </div>
       </div>
       {showCard == true && (
@@ -140,7 +140,7 @@ export default function Home() {
 
           const newcon = EditorState.createEmpty();
           await setEditorState(newcon);
-
+          setChange(!change);
           id && navigate(`/note/${id}`);
         }}
         className="bg-logogreen text-xl    text-fontc absolute bottom-6 right-6 md:right-12 md:bottom-12  transition-all cursor-pointer   md:h-[70px] md:w-[70px] w-[70px] h-[70px] flex flex-col justify-center items-center  p-4 rounded-full shadow   "

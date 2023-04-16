@@ -22,7 +22,8 @@ var inlineTypes = [
 ];
 
 export const Tools = () => {
-  const { handleDel, editorState, setEditorState } = useContext(myCon);
+  const { handleDel, editorState, setEditorState, setChange, change } =
+    useContext(myCon);
   const uid = useParams();
 
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export const Tools = () => {
       <button
         onClick={() => {
           handleDel(uid);
+          setChange(!change);
           navigate("/");
         }}
         className="flex ml-auto justify-center px-2 md:border-none transition w-[max-content] h-[36px]  items-center text-sm  rounded-[3px] text-red-500"
@@ -117,7 +119,7 @@ export const ButtonInline = ({ type }: Prop) => {
     e.preventDefault();
     let type = e.target.value.toString();
     setEditorState(RichUtils.toggleInlineStyle(editorState, type));
-    console.log(type);
+   
   };
 
   return (

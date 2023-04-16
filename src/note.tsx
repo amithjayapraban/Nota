@@ -13,10 +13,9 @@ export default function Note() {
 
   useEffect(() => {
     setNoteId(uid.uid);
-    console.count("note");
-
     fetchNote(uid.uid);
-  }, []);
+    console.count("note");
+  }, [uid]);
 
   const animationConfiguration = {
     initial: { opacity: 0 },
