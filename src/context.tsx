@@ -88,10 +88,13 @@ export const CProvider = ({ children }: any) => {
     for (let k of state) {
       if (k.UID == uid) st = k.html;
     }
+
     if (st != null && st != undefined) {
       const contentState: any = convertFromRaw(st);
       const newcon = EditorState.createWithContent(contentState);
       setEditorState(newcon);
+    } else if (st == undefined) {
+      setEditorState(editorState);
     }
   }
 
