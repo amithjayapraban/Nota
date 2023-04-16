@@ -83,9 +83,7 @@ export const CProvider = ({ children }: any) => {
   function fetchNote(uid: string | undefined) {
     const i: any = localStorage.getItem("note");
     const state = JSON.parse(i);
-    if ((state.length = 0)) {
-      setEditorState(editorState);
-    } else {
+    if (state.length != 0) {
       let st;
       for (let k of state) {
         if (k.UID == uid) st = k.html;
@@ -95,8 +93,6 @@ export const CProvider = ({ children }: any) => {
         const contentState: any = convertFromRaw(st);
         const newcon = EditorState.createWithContent(contentState);
         setEditorState(newcon);
-      } else {
-        setEditorState(editorState);
       }
     }
   }

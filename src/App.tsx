@@ -14,7 +14,6 @@ function App() {
       <div className="App flex max-h-[80vh]     margin-0  p-4 md:p-10     text-fontc flex-col ">
         <Router>
           <Head />
-
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/note/:uid/*" element={<Note />} />

@@ -1,8 +1,3 @@
-
-
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -21,45 +16,30 @@
   </p>
 </div>
 
-
-
-
-
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
-Note taking web app. <br/> Uses LocalStorage. 
+
+Note taking web app. <br/> Uses LocalStorage.
 
 ### Screenshots
-
 
 <div align="left">
 <img src="public/screenshot.png"  width="150" />
 </div>
 
-
-
-
 ### Built With
-* React
-* Tailwind
 
-
-
-
-
-
+- React
+- Tailwind
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
-
-
 
 ### Prerequisites
 
-
-* npm
+- npm
   ```sh
   npm install npm@latest -g
   ```
@@ -75,15 +55,8 @@ Note taking web app. <br/> Uses LocalStorage.
    npm install
    ```
 
-
-
-
-
-
-
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -97,32 +70,14 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
-
-
-<!-- LICENSE 
+<!-- LICENSE
 ## License
 
-Distributed under the MIT License. 
+Distributed under the MIT License.
 -->
 
-
-
-
 <!-- CONTACT -->
+
 ## Contact
 
-Amith Jayapraban - [@amithjayapraban](https://twitter.com/amithjayapraban)  
-
-
-
-
-
-
-
-
-
-
-
-
+Amith Jayapraban - [@amithjayapraban](https://twitter.com/amithjayapraban)
